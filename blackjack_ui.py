@@ -16,10 +16,10 @@ elif reward < 0:
     print('you lose')
     sys.exit()
 
-action = "hit"
-while reward == 0 or action == "hit":
-    action = input("Enter hit or stand here:\t")
-    if action != 'hit':
+action = 1
+while reward == 0 or action == 1:
+    action = int(input("Enter 1 for hit or anything else for stand here:\t"))
+    if action != 1:
         break
     state, reward = game.make_action(action)
     print("Player Hand: \t", game.player_hand)
@@ -54,5 +54,8 @@ if reward > 0:
     sys.exit()
 elif reward < 0:
     print('you lose')
+    sys.exit()
+else:
+    print('tie')
     sys.exit()
 

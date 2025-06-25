@@ -90,7 +90,7 @@ class Game:
         return (self.get_state(), self.get_reward())
 
     def make_action(self, action):
-        if action == "hit":
+        if action == 1:
             for i in range(len(self.deck)):
                 if self.deck[i] is not None:
                     self.player_hand.append(self.deck[i])
@@ -98,6 +98,8 @@ class Game:
                     break
             if self.calc_value_of_hand(self.player_hand) > 21:
                 return self.get_state(), -1  # player busts
+            return self.get_state(), self.get_reward()
+        else:
             return self.get_state(), self.get_reward()
 
     def dealer_hits(self):
@@ -119,7 +121,7 @@ class Game:
             for i in range(len(self.deck)):
                 if self.deck[i] is not None:
                     self.dealer_hand.append(self.deck[i])
-                    print(self.deck[i])
+                    print('\t Dealer draws: \t:', self.deck[i])
                     self.deck[i] = None
                     break
             dealer_total = self.calc_value_of_hand(self.dealer_hand)
