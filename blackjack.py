@@ -8,6 +8,34 @@ class Game:
         self.deck = list(itertools.product(value, suits))
         self.player_hand = None
         self.dealer_hand = None
+    
+    
+    def is_game_over(self, didPlayerFinishTurn):
+        player_value = self.calc_value_of_hand(self.player_hand)
+        dealer_value = self.calc_value_of_hand(self.dealer_hand)
+
+        # If player hits 21, game should end immediately
+        if player_value == 21:
+            return True
+
+        # If player busts, game ends
+        if player_value > 21:
+            return True
+
+        # If dealer busts, game ends
+        if dealer_value > 21:
+            return True
+
+        # If both have 21, game ends
+        if player_value == 21 and dealer_value == 21:
+            return True
+
+        # If player stands, check if dealer has finished
+        if didPlayerFinishTurn:
+            if dealer_value >= 17:
+                return True
+
+        return False
 
     def calc_value_of_hand(self, hand):
         total = 0
@@ -90,7 +118,7 @@ class Game:
         return (self.get_state(), self.get_reward())
 
     def make_action(self, action):
-        if action == 1:
+        if action == 1: #your boy hit
             for i in range(len(self.deck)):
                 if self.deck[i] is not None:
                     self.player_hand.append(self.deck[i])
@@ -100,7 +128,7 @@ class Game:
                 return self.get_state(), -1  # player busts
             return self.get_state(), self.get_reward()
         else:
-            return self.get_state(), self.get_reward()
+            return self.dealer_hits()
 
     def dealer_hits(self):
         dealer_total = self.calc_value_of_hand(self.dealer_hand)
@@ -121,14 +149,14 @@ class Game:
             for i in range(len(self.deck)):
                 if self.deck[i] is not None:
                     self.dealer_hand.append(self.deck[i])
-                    print('\t Dealer draws: \t:', self.deck[i])
+                    print('\t\t\tDealer draws: \t:', self.deck[i])
                     self.deck[i] = None
                     break
             dealer_total = self.calc_value_of_hand(self.dealer_hand)
         if  self.calc_value_of_hand(self.player_hand) < 21 and self.calc_value_of_hand(self.dealer_hand) < 21:
-            if dealer_total > self.calc_value_of_hand(self.player_hand):
+            if self.calc_value_of_hand(self.dealer_hand) > self.calc_value_of_hand(self.player_hand):
                 reward = -1
-            elif dealer_total < self.calc_value_of_hand(self.player_hand):
+            elif self.calc_value_of_hand(self.dealer_hand) < self.calc_value_of_hand(self.player_hand):
                 reward = 1
             else:
                 reward = 0
@@ -136,4 +164,3 @@ class Game:
             reward = self.get_reward()
             
         return self.get_state(), reward
-
