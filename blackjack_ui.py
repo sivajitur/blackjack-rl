@@ -58,4 +58,3 @@ elif reward < 0:
 else:
     print('tie')
     sys.exit()
-
