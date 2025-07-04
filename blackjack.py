@@ -149,7 +149,6 @@ class Game:
             for i in range(len(self.deck)):
                 if self.deck[i] is not None:
                     self.dealer_hand.append(self.deck[i])
-                    print('\t\t\tDealer draws: \t:', self.deck[i])
                     self.deck[i] = None
                     break
             dealer_total = self.calc_value_of_hand(self.dealer_hand)

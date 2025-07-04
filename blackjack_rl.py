@@ -8,10 +8,11 @@ gamma = 0.1
 alpha = 0.05
 
 Q = defaultdict(lambda: [0,0])
+td_total = list()
 
 def decideAction(state):
     outcomes = ["Off Policy", "On Policy"]
-    probabilities = [epsilon, 1-epsilon]  # Probability of Outcome A is 0.7, Outcome B is 0.3
+    probabilities = [epsilon, 1-epsilon] 
 
     # Sample two outcomes with replacement
     decision = random.choices(outcomes, weights=probabilities, k=1)[0]
@@ -20,10 +21,10 @@ def decideAction(state):
     elif decision == "On Policy":
         return np.argmax(Q[state])
 
-for i in range(1,5):
+for i in range(1,1000):
     print("Game ", i)
-    if i%100 == 0:
-        epsilon -= 0.05
+    if i%10 == 0:
+        epsilon -= 0.005
     game = Game()
     state, initial_reward = game.deal()
     didPlayerFinishTurn = False
@@ -59,5 +60,4 @@ for i in range(1,5):
         Q[state][action] = Q_old + alpha * td
         print('\tQ: \t', Q)
         state = next_state
-
-print('Q: \t', Q)
+        td_total.insert(td)
