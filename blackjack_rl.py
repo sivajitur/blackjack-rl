@@ -60,4 +60,4 @@ for i in range(1,1000):
         Q[state][action] = Q_old + alpha * td
         print('\tQ: \t', Q)
         state = next_state
-        td_total.insert(td)
+        td_total.append(td)
